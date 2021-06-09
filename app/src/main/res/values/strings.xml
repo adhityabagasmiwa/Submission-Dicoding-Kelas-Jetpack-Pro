@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CinemaQ</string>
+    <string name="logo_name">CinemaQ</string>
+    <string name="movies_tab">Movies</string>
+    <string name="tvshow_tab">Tv Show</string>
+    <string name="tv_type">tv</string>
+    <string name="movies_type">movies</string>
+    <string name="release_date">Release Date</string>
+    <string name="overview">Overview</string>
+    <string name="icon_runtime">icon runtime</string>
+    <string name="button_back_activity">button back activity</string>
+    <string name="icon_score">icon score</string>
+    <string name="icon_vote_count">icon vote count</string>
+    <string name="icon_date">icon date</string>
+    <string name="genres">Genres</string>
+    <string name="image_small_poster">image small poster</string>
+    <string name="image_big_poster">image big poster</string>
+</resources>
