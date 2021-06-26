@@ -1,37 +1,49 @@
+Instrumentation Test Scenario
+
 1. Menampilkan data movies
+   - Memastikan bottom_navigation dalam keadaan tampil.
+   - Memastikan navigation movies dalam keadaan tampil.
    - Memastikan rv_movies dalam keadaan tampil.
    - Gulir rv_movies ke posisi data terakhir.
 
 2. Menampilkan data detail movies
-  - Memberi tindakan klik pada data pertama di rv_movies.
-  - Memastikan TextView untuk tv_title, tv_runtime, tv_score, tv_vote_count, tv_genres, tv_description, tv_release_date tampil sesuai dengan yang diharapkan.
+   - Memastikan bottom_navigation dalam keadaan tampil.
+   - Memastikan navigation movies dalam keadaan tampil.
+   - Memastikan rv_movies dalam keadaan tampil.
+   - Memberi tindakan klik pada rv_movies data pertama.
+   - Memastikan data pertama detail movies dalam keadaan tampil.
+   - Memastikan TextView untuk tv_title, tv_runtime, tv_score, tv_vote_count, tv_release_date, tv_genres, tv_description tampil sesuai dengan yang diharapkan.
+   - Memastikan ImageView untuk iv_big_poster dan iv_small_poster tampil dengan dengan baik.
 
 3. Menampilkan data tv show
-   - Memberikan tindakan klik pada teks TV SHOW.
-   - Memastikan TabLayout dapat berpindah ke Tv Show Fragment.
+   - Memastikan bottom_navigation dalam keadaan tampil.
+   - Memastikan navigation tv show dalam keadaan tampil.
    - Memastikan rv_tv_show dalam keadaan tampil.
    - Gulir rv_tv_show ke posisi data terakhir.
 
 4. Menampilkan data detail tv show
-  - Memberi tindakan klik pada data pertama di rv_tv_show.
-  - Memastikan TextView untuk tv_title, tv_runtime, tv_score, tv_vote_count, tv_genres, tv_description, tv_release_date tampil sesuai dengan yang diharapkan.
+   - Memastikan bottom_navigation dalam keadaan tampil.
+   - Memastikan navigation tv show dalam keadaan tampil.
+   - Memastikan rv_tv_show dalam keadaan tampil.
+   - Memberi tindakan klik pada rv_tv_show data pertama.
+   - Memastikan data pertama detail tv show dalam keadaan tampil.
+   - Memastikan TextView untuk tv_title, tv_runtime, tv_score, tv_vote_count, tv_release_date, tv_genres, tv_description tampil sesuai dengan yang diharapkan.
+   - Memastikan ImageView untuk iv_big_poster dan iv_small_poster tampil dengan dengan baik..
 
 5. Memberikan tindakan button navigation pada detail movies
-  - Memberi tindakan klik pada data pertama di rv_movies.
-  - Memastikan tindakan klik pada btn_back.
-  - Memastikan rv_movies dalam keadaan tampil.
+   - Memberi tindakan klik pada data pertama di rv_movies.
+   - Memastikan tindakan klik pada btn_back.
+   - Memastikan rv_movies dalam keadaan tampil.
 
 6. Memberikan tindakan button navigation pada detail tv show
-  - Memberi tindakan klik pada data pertama di rv_tv_show.
-  - Memastikan tindakan klik pada btn_back.
-  - Memastikan rv_tv_show dalam keadaan tampil.
+   - Memberi tindakan klik pada data pertama di rv_tv_show.
+   - Memastikan tindakan klik pada btn_back.
+   - Memastikan rv_tv_show dalam keadaan tampil.
 
-7. Menampilkan trailer data movies
-  - Memberi tindakan klik pada data pertama di rv_movies.
-  - Memastikan tindakan klik pada btn_trailer.
+7. Memberikan tindakan button share pada detail movies
+   - Memberi tindakan klik pada data pertama di rv_movies.
+   - Memastikan tindakan klik pada btn_share.
 
-8. Menampilkan trailer data tv show
-  - Memberikan tindakan klik pada teks TV SHOW.
-  - Memastikan TabLayout dapat berpindah ke Tv Show Fragment.
-  - Memberi tindakan klik pada data pertama di rv_tv_show.
-  - Memastikan tindakan klik pada btn_trailer
+8. Memberikan tindakan button share pada detail tv show
+   - Memberi tindakan klik pada data pertama di rv_tv_show.
+   - Memastikan tindakan klik pada btn_share.

@@ -1,15 +1,18 @@
 package com.adhityabagasmiwa.submissionjetpackpro.ui.movies
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.adhityabagasmiwa.submissionjetpackpro.R
-import com.adhityabagasmiwa.submissionjetpackpro.data.model.CatalogueEntity
+import com.adhityabagasmiwa.submissionjetpackpro.data.source.local.entity.CatalogueEntity
 import com.adhityabagasmiwa.submissionjetpackpro.databinding.ItemsDataListBinding
 import com.adhityabagasmiwa.submissionjetpackpro.ui.detail.DetailActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.adhityabagasmiwa.submissionjetpackpro.BuildConfig.IMG_URL
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
     private var listMovies = ArrayList<CatalogueEntity>()
@@ -30,25 +33,30 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
         holder.bind(movies)
     }
 
-    override fun getItemCount(): Int = listMovies.size
+    override fun getItemCount(): Int {
+        Log.d("DataSize: ", listMovies.size.toString())
+        return listMovies.size
+    }
 
     class MoviesViewHolder(private val binding: ItemsDataListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movies: CatalogueEntity) {
             with(binding) {
                 tvTitle.text = movies.title
-                tvRuntime.text = movies.duration
-                tvScore.text = movies.score.toString()
+                tvDescription.text = movies.overview
+                tvScore.text = movies.voteAverage.toString()
                 itemView.setOnClickListener {
                     val mIntent = Intent(itemView.context, DetailActivity::class.java)
-                    mIntent.putExtra(DetailActivity.EXTRA_ID, movies.id)
+                    mIntent.putExtra(DetailActivity.EXTRA_ID, movies.id.toString())
                     mIntent.putExtra(DetailActivity.EXTRA_TYPE, R.string.movies_type.toString())
                     itemView.context.startActivity(mIntent)
                 }
                 Glide.with(itemView.context)
-                    .load(movies.poster)
+                    .load(IMG_URL + movies.posterPath)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .apply(
-                        RequestOptions.placeholderOf(R.drawable.ic_placeholder_image)
-                            .error(R.drawable.ic_broken_image)
+                        RequestOptions.placeholderOf(R.drawable.ic_loading)
+                            .error(R.drawable.ic_error)
                     )
                     .into(imgPoster)
             }

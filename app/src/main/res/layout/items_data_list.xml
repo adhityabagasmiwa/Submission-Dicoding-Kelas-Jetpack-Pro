@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dimen_small"
     android:paddingStart="@dimen/dimen_standard"
+    android:paddingTop="@dimen/dimen_small"
     android:paddingEnd="@dimen/dimen_standard"
     android:paddingBottom="@dimen/dimen_standard">
 
@@ -52,28 +52,19 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="How to Train Your Dragon: The Hidden World" />
 
-                        <ImageView
-                            android:id="@+id/img_runtime"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="16dp"
-                            android:contentDescription="@string/icon_runtime"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                            app:srcCompat="@drawable/ic_watch_time" />
-
                         <TextView
-                            android:id="@+id/tv_runtime"
+                            android:id="@+id/tv_description"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
                             android:fontFamily="@font/montserrat"
-                            android:textColor="@color/colorSecondary"
-                            app:layout_constraintBottom_toBottomOf="@+id/img_runtime"
+                            android:maxLines="2"
+                            android:textColor="@color/white"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/img_runtime"
-                            app:layout_constraintTop_toTopOf="@+id/img_runtime"
-                            tools:text="1h 34m" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                            tools:text="Overview" />
 
                         <ImageView
                             android:id="@+id/img_score"
@@ -82,7 +73,7 @@
                             android:layout_marginTop="8dp"
                             android:contentDescription="@string/icon_score"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_runtime"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_description"
                             app:srcCompat="@drawable/ic_star_rate" />
 
                         <TextView
@@ -125,8 +116,9 @@
                     android:id="@+id/img_poster"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/colorDark"
                     android:contentDescription="@string/image_small_poster"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     tools:srcCompat="@drawable/poster_aquaman" />
 
             </androidx.cardview.widget.CardView>

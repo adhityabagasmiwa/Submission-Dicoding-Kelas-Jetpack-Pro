@@ -7,20 +7,15 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".ui.detail.DetailActivity">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -53,6 +48,7 @@
                             android:id="@+id/iv_big_poster"
                             android:layout_width="match_parent"
                             android:layout_height="240dp"
+                            android:background="@color/colorDark"
                             android:contentDescription="@string/image_big_poster"
                             android:foreground="@drawable/bg_gradient"
                             android:scaleType="centerCrop"
@@ -78,19 +74,20 @@
                             android:id="@+id/iv_small_poster"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@color/colorDark"
                             android:contentDescription="@string/image_small_poster"
-                            android:scaleType="fitXY"
+                            android:scaleType="centerCrop"
                             tools:srcCompat="@drawable/poster_aquaman" />
 
                     </androidx.cardview.widget.CardView>
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_trailer"
+                        android:id="@+id/btn_share"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_marginTop="215dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/bg_icon_play"
+                        android:layout_marginEnd="@dimen/dimen_standard"
+                        android:background="@drawable/bg_icon_share"
                         app:layout_constraintEnd_toEndOf="@+id/card_view_big_poster"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -99,7 +96,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_standard"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/dimen_small"
                         android:layout_marginEnd="@dimen/dimen_standard"
                         android:ellipsize="end"
                         android:fontFamily="@font/montserrat_bold"
@@ -109,14 +106,14 @@
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/card_view_small_poster"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_trailer"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_share"
                         tools:text="How to Train Your Dragon: The Hidden World" />
 
                     <TextView
                         android:id="@+id/tv_runtime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="@dimen/dimen_small"
                         android:layout_marginEnd="@dimen/dimen_standard"
                         android:fontFamily="@font/montserrat"
                         android:textColor="@color/colorSecondary"
@@ -131,11 +128,9 @@
                         android:id="@+id/img_runtime"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:contentDescription="@string/icon_runtime"
-                        app:layout_constraintBottom_toBottomOf="@+id/card_view_small_poster"
-                        app:layout_constraintStart_toEndOf="@+id/card_view_small_poster"
+                        app:layout_constraintStart_toStartOf="@+id/tv_title"
                         app:layout_constraintTop_toBottomOf="@+id/tv_title"
                         app:srcCompat="@drawable/ic_watch_time" />
 
@@ -145,16 +140,17 @@
                     android:id="@+id/toolbar_main"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="@dimen/dimen_extra_standard"
+                    android:theme="@style/Theme.AppBarOverlay"
                     app:layout_collapseMode="pin">
 
                     <ImageButton
                         android:id="@+id/btn_back"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_marginEnd="@dimen/dimen_standard"
                         android:background="@drawable/bg_rounded_transparent"
                         android:contentDescription="@string/button_back_activity"
-                        android:src="@drawable/ic_arrow_left" />
+                        android:src="@drawable/ic_arrow_small_back" />
 
                 </androidx.appcompat.widget.Toolbar>
 
@@ -166,6 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
+
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -177,8 +174,8 @@
                     android:id="@+id/img_score"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="@dimen/dimen_standard"
+                    android:layout_marginTop="@dimen/dimen_standard"
                     android:background="@drawable/bg_circle"
                     android:contentDescription="@string/icon_score"
                     android:padding="12dp"
@@ -190,7 +187,7 @@
                     android:id="@+id/tv_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/dimen_small"
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -202,7 +199,7 @@
                     android:id="@+id/tv_vote_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/dimen_small"
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/colorDark"
                     android:textSize="12sp"
@@ -215,7 +212,7 @@
                     android:id="@+id/img_person"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/dimen_extra_small"
                     android:contentDescription="@string/icon_vote_count"
                     app:layout_constraintBottom_toBottomOf="@id/tv_vote_count"
                     app:layout_constraintStart_toEndOf="@+id/tv_vote_count"
@@ -226,9 +223,9 @@
                     android:id="@+id/title_genres"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/dimen_standard"
+                    android:layout_marginTop="@dimen/dimen_large"
+                    android:layout_marginEnd="@dimen/dimen_standard"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/genres"
                     android:textColor="@color/white"
@@ -241,9 +238,9 @@
                     android:id="@+id/tv_genres"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/dimen_standard"
+                    android:layout_marginTop="@dimen/dimen_extra_small"
+                    android:layout_marginEnd="@dimen/dimen_standard"
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -255,9 +252,9 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/dimen_standard"
+                    android:layout_marginTop="@dimen/dimen_large"
+                    android:layout_marginEnd="@dimen/dimen_standard"
                     android:elevation="4dp"
                     app:cardBackgroundColor="@color/colorPrimary"
                     app:cardCornerRadius="12dp"
@@ -299,8 +296,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="@dimen/dimen_standard"
+                    android:layout_marginEnd="@dimen/dimen_standard"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/release_date"
                     android:textColor="@color/white"
@@ -312,8 +309,8 @@
                     android:id="@+id/tv_release_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/dimen_small"
+                    android:layout_marginEnd="@dimen/dimen_standard"
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/white"
                     android:textSize="12sp"
@@ -327,7 +324,7 @@
                     android:id="@+id/img_date"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="@dimen/dimen_extra_large"
                     android:contentDescription="@string/icon_date"
                     app:layout_constraintBottom_toBottomOf="@+id/img_person"
                     app:layout_constraintStart_toEndOf="@+id/img_person"
@@ -339,6 +336,31 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/coordinator_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/placeholder_item_detail" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_detail_catalogue"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,43 +1,25 @@
 package com.adhityabagasmiwa.submissionjetpackpro.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.adhityabagasmiwa.submissionjetpackpro.data.model.CatalogueEntity
-import com.adhityabagasmiwa.submissionjetpackpro.utils.DataDummy
+import com.adhityabagasmiwa.submissionjetpackpro.R
+import com.adhityabagasmiwa.submissionjetpackpro.data.source.CatalogueRepository
+import com.adhityabagasmiwa.submissionjetpackpro.data.source.local.entity.DetailEntity
 
-class DetailViewModel : ViewModel() {
-    private var moviesId: Int = 0
-    private var tvId: Int = 0
-    private lateinit var result: CatalogueEntity
+class DetailViewModel(private val catalogueRepository: CatalogueRepository) : ViewModel() {
 
-    private fun getMovies(): List<CatalogueEntity> = DataDummy.getMovies()
+    private lateinit var result: LiveData<DetailEntity>
 
-    private fun getTvShow(): List<CatalogueEntity> = DataDummy.getTvShows()
-
-    fun setSelectedMovies(moviesId: Int) {
-        this.moviesId = moviesId
-    }
-
-    fun setSelectedTvShow(tvId: Int) {
-        this.tvId = tvId
-    }
-
-    fun getMoviesById(): CatalogueEntity {
-        val listMovies = getMovies()
-        for (movies in listMovies) {
-            if (movies.id == moviesId) {
-                result = movies
+    fun setCatalogue(id: String, type: String) {
+        when (type) {
+            R.string.movies_type.toString() -> {
+                result = catalogueRepository.getDetailsMovies(id)
+            }
+            R.string.tv_type.toString() -> {
+                result = catalogueRepository.getDetailsTvShow(id)
             }
         }
-        return result
     }
 
-    fun getTvShowById(): CatalogueEntity {
-        val listTvShow = getTvShow()
-        for (tvShow in listTvShow) {
-            if (tvShow.id == tvId) {
-                result = tvShow
-            }
-        }
-        return result
-    }
+    fun getCatalogueDetail() = result
 }

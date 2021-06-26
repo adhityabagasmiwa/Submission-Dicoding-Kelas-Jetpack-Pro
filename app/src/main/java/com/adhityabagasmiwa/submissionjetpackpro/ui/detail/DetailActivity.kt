@@ -1,26 +1,26 @@
 package com.adhityabagasmiwa.submissionjetpackpro.ui.detail
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.adhityabagasmiwa.submissionjetpackpro.BuildConfig.IMG_URL
 import com.adhityabagasmiwa.submissionjetpackpro.R
-import com.adhityabagasmiwa.submissionjetpackpro.data.model.CatalogueEntity
+import com.adhityabagasmiwa.submissionjetpackpro.data.source.local.entity.DetailEntity
 import com.adhityabagasmiwa.submissionjetpackpro.databinding.ActivityDetailBinding
+import com.adhityabagasmiwa.submissionjetpackpro.utils.formatDate
+import com.adhityabagasmiwa.submissionjetpackpro.utils.glideConfig
+import com.adhityabagasmiwa.submissionjetpackpro.utils.timeConvertMovies
+import com.adhityabagasmiwa.submissionjetpackpro.utils.timeConvertTvShow
 import com.adhityabagasmiwa.submissionjetpackpro.viewmodel.DetailViewModel
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.adhityabagasmiwa.submissionjetpackpro.viewmodel.ViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
 
 class DetailActivity : AppCompatActivity() {
-
-    companion object {
-        const val EXTRA_ID = "extra_id"
-        const val EXTRA_TYPE = "extra_type"
-    }
 
     private lateinit var activityDetailBinding: ActivityDetailBinding
 
@@ -31,56 +31,62 @@ class DetailActivity : AppCompatActivity() {
 
         activityDetailBinding.btnBack.setOnClickListener { finish() }
 
-        val catalogueId = intent.getIntExtra(EXTRA_ID, 0)
-        val catalogueType = intent.getStringExtra(EXTRA_TYPE)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+        window.statusBarColor = Color.TRANSPARENT
 
-        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
-
+        val factory = ViewModelFactory.getInstance(this)
+        val viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
         val extras = intent.extras
+
         if (extras != null) {
-            if (catalogueType == R.string.movies_type.toString()) {
-                loading()
-                viewModel.setSelectedMovies(catalogueId)
-                populateData(viewModel.getMoviesById())
-                collapsingToolbarConfig(viewModel.getMoviesById())
-            } else if (catalogueType == R.string.tv_type.toString()) {
-                loading()
-                viewModel.setSelectedTvShow(catalogueId)
-                populateData(viewModel.getTvShowById())
-                collapsingToolbarConfig(viewModel.getTvShowById())
+            showShimmer()
+            val catalogueId = extras.getString(EXTRA_ID)
+            val catalogueType = extras.getString(EXTRA_TYPE)
+
+            if (catalogueId != null && catalogueType != null) {
+                viewModel.setCatalogue(catalogueId, catalogueType)
+                viewModel.getCatalogueDetail().observe(this, { detailCatalogue ->
+                    hideShimmer()
+                    populateData(detailCatalogue)
+                    collapsingToolbarConfig(detailCatalogue)
+                })
             }
         }
     }
 
-    @SuppressLint("QueryPermissionsNeeded")
-    private fun populateData(catalogueEntity: CatalogueEntity) {
-        activityDetailBinding.tvTitle.text = catalogueEntity.title
-        activityDetailBinding.tvRuntime.text = catalogueEntity.duration
-        activityDetailBinding.tvScore.text = catalogueEntity.score.toString()
-        activityDetailBinding.tvVoteCount.text = catalogueEntity.vote_count.toString()
-        activityDetailBinding.tvReleaseDate.text = catalogueEntity.release_date
-        activityDetailBinding.tvGenres.text = catalogueEntity.genres
-        activityDetailBinding.tvDescription.text = catalogueEntity.overview
+    private fun populateData(detailEntity: DetailEntity) {
+        val typeMovies = "movie"
+        val typeTvShow = "tv"
+        val extras = intent.extras
+        val catalogueType = extras!!.getString(EXTRA_TYPE)
 
-        Glide.with(this)
-            .load(catalogueEntity.poster)
-            .centerCrop()
-            .apply(
-                RequestOptions.placeholderOf(R.drawable.ic_placeholder_image)
-                    .error(R.drawable.ic_broken_image)
-            )
-            .into(activityDetailBinding.ivSmallPoster)
+        if (catalogueType == R.string.movies_type.toString()) {
+            activityDetailBinding.tvRuntime.text = detailEntity.runtime?.let { timeConvertMovies(it) }
+            activityDetailBinding.btnShare.setOnClickListener {
+                shareCatalogue(detailEntity.id.toString(), typeMovies)
+            }
+        } else {
+            activityDetailBinding.tvRuntime.text = detailEntity.runtime?.let { timeConvertTvShow(it) }
+            activityDetailBinding.btnShare.setOnClickListener {
+                shareCatalogue(detailEntity.id.toString(), typeTvShow)
+            }
+        }
+        if (detailEntity.releaseDate == "") {
+            activityDetailBinding.tvReleaseDate.text = ""
+        } else {
+            activityDetailBinding.tvReleaseDate.text = detailEntity.releaseDate?.let { formatDate(it) }
+        }
 
-        Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w500" + catalogueEntity.big_poster)
-            .centerCrop()
-            .apply(
-                RequestOptions.placeholderOf(R.drawable.ic_placeholder_image)
-                    .error(R.drawable.ic_broken_image)
-            )
-            .into(activityDetailBinding.ivBigPoster)
+        activityDetailBinding.tvTitle.text = detailEntity.title
+        activityDetailBinding.tvScore.text = detailEntity.voteAverage.toString()
+        activityDetailBinding.tvVoteCount.text = detailEntity.voteCount.toString()
+        activityDetailBinding.tvGenres.text = detailEntity.genres.toString().replace("[", "").replace("]", "")
+        activityDetailBinding.tvDescription.text = detailEntity.overview
+        glideConfig(this, IMG_URL + detailEntity.posterPath, activityDetailBinding.ivSmallPoster)
+        glideConfig(this, IMG_URL + detailEntity.backdropPath, activityDetailBinding.ivBigPoster)
 
-        activityDetailBinding.btnTrailer.setOnClickListener {
+        /*activityDetailBinding.btnTrailer.setOnClickListener {
             val trailerKey = catalogueEntity.trailer_key
             val mIntent = Intent(Intent.ACTION_VIEW)
             mIntent.data = (Uri.parse("https://www.youtube.com/watch?v=$trailerKey"))
@@ -88,10 +94,10 @@ class DetailActivity : AppCompatActivity() {
             if (mIntent.resolveActivity(packageManager) != null) {
                 startActivity(mChooser)
             }
-        }
+        }*/
     }
 
-    private fun collapsingToolbarConfig(catalogueEntity: CatalogueEntity) {
+    private fun collapsingToolbarConfig(detailEntity: DetailEntity) {
         val appBarLayout = activityDetailBinding.appBar
         val collapsingToolbarLayout = activityDetailBinding.collapsingToolbar
         appBarLayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
@@ -102,19 +108,57 @@ class DetailActivity : AppCompatActivity() {
                     scrollRange = appBarLayout.totalScrollRange
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.title = catalogueEntity.title.toString()
-                    collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar)
+                    collapsingToolbarLayout.title = detailEntity.title.toString()
+                    collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBarTextAppearance)
+                    activityDetailBinding.btnBack.setImageResource(R.drawable.ic_arrow_back)
+                    activityDetailBinding.btnBack.setBackgroundColor(Color.TRANSPARENT)
                     isShow = true
                 } else if (isShow) {
                     collapsingToolbarLayout.title = " "
                     isShow = false
+                    activityDetailBinding.btnBack.setImageResource(R.drawable.ic_arrow_small_back)
+                    activityDetailBinding.btnBack.setBackgroundResource(R.drawable.bg_rounded_transparent)
                 }
             }
         })
     }
 
-    private fun loading() {
-        activityDetailBinding.progressBar.visibility = View.GONE
+    private fun shareCatalogue(id: String, type: String) {
+        val mUrl = "https://www.themoviedb.org/"
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "$mUrl${type}/$id")
+        startActivity(Intent.createChooser(shareIntent, "Share via"))
+        Log.d("ShareIntent", shareIntent.toString())
+    }
+
+    private fun setWindowFlag(mBits: Int, mOn: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (mOn) {
+            winParams.flags = winParams.flags or mBits
+        } else {
+            winParams.flags = winParams.flags and mBits.inv()
+        }
+        win.attributes = winParams
+    }
+
+    private fun showShimmer() {
+        activityDetailBinding.shimmerLayout.startShimmer()
+        activityDetailBinding.shimmerLayout.visibility = View.VISIBLE
+        activityDetailBinding.progressBarDetailCatalogue.visibility = View.VISIBLE
+    }
+
+    private fun hideShimmer() {
+        activityDetailBinding.shimmerLayout.stopShimmer()
+        activityDetailBinding.shimmerLayout.visibility = View.GONE
+        activityDetailBinding.progressBarDetailCatalogue.visibility = View.GONE
         activityDetailBinding.coordinatorLayout.visibility = View.VISIBLE
+    }
+
+    companion object {
+        const val EXTRA_ID = "extra_id"
+        const val EXTRA_TYPE = "extra_type"
     }
 }

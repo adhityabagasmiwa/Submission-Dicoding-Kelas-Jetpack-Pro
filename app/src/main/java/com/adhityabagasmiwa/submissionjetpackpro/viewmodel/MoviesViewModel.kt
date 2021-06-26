@@ -1,9 +1,10 @@
 package com.adhityabagasmiwa.submissionjetpackpro.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.adhityabagasmiwa.submissionjetpackpro.data.model.CatalogueEntity
-import com.adhityabagasmiwa.submissionjetpackpro.utils.DataDummy
+import com.adhityabagasmiwa.submissionjetpackpro.data.source.CatalogueRepository
+import com.adhityabagasmiwa.submissionjetpackpro.data.source.local.entity.CatalogueEntity
 
-class MoviesViewModel : ViewModel() {
-    fun getMovies() : List<CatalogueEntity> = DataDummy.getMovies()
+class MoviesViewModel(private val catalogueRepository: CatalogueRepository) : ViewModel() {
+    fun getMovies() : LiveData<List<CatalogueEntity>> = catalogueRepository.getMovies()
 }
